@@ -1,23 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import Navbar from './components/Navbar'
+import TextForm from './components/TextForm';
+import Alert from './components/Alert';
 
 function App() {
+  const [mode, setMode] = useState("light")
+  const [alert, setAlert] = useState(null)
+  const alertFunc = (message, type)=> {
+    setAlert(
+      {
+        message: message,
+        type: type
+      }
+    )
+    
+    setTimeout(()=>{
+      setAlert(null)
+    }, 2000)
+  }
+
+  function changeBackgroundMode() {
+    console.log("clicked")
+    if(mode==="light") {
+      document.body.style.backgroundColor='black'
+      setMode("dark")
+    } else {
+      document.body.style.backgroundColor='white'
+      setMode("light")
+    }
+  }
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        <Navbar click={changeBackgroundMode} mode={mode}/>
+        <Alert msg={alert}/>
+        <TextForm title="Enter the text to analyze below" mode={mode} alert={alertFunc}/>
     </div>
   );
 }
